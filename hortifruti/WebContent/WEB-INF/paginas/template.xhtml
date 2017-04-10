@@ -1,0 +1,94 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:siaf="http://java.sun.com/jsf/composite/siaf"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+     <title>::: Sistema de avaliação física :::</title>
+	 <h:outputStylesheet library="css" name="bootstrap.css" />
+	 <!--<h:outputScript name="locale-primefaces.js" library="js" />  -->
+	
+</h:head>
+
+<h:body>
+	<p:growl id="mensagem" />
+
+	<div id="cabecalho" style="margin-bottom: 20px">
+		
+		<div class="ui-grid ui-grid-responsive">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-3" align="right" >	
+						<p:graphicImage id="siafimage" library="images" name="template_image.jpg" cache="true" height="200" width="200"/>
+				</div>
+				<div class="ui-grid-col-6" align="left" >
+					<p:graphicImage id="siaflogo" library="images" name="template.png" cache="true" height="221" width="625"/>
+				</div>
+				<div class="ui-grid-col-3" >
+					<p:panel >
+						<div class="ui-grid-row">
+							<div class="ui-grid-col-9" align="center" >
+								<p:outputLabel value="Usuário:" />
+								<p:outputLabel value=" #{usuarioLogado.usuario.nome}" />
+							</div>
+							<div class="ui-grid-col-3" align="right" >
+								<p:outputLabel value="Sair:" />
+								<p:commandLink action="#{loginBean.logout}" title="Sair" style="margin-left:10px;">
+									<h:graphicImage library="icones" name="logout.png" />
+								</p:commandLink>
+							</div>
+						</div>
+					</p:panel>	
+				</div>	
+			</div>
+		</div>
+	</div>
+
+
+	<div id="conteudo">
+		<h:form>
+			<p:menubar autoDisplay="true">
+
+				<p:submenu label="Cadastro"  rendered="#{usuarioLogado.usuario.perfil.nome == 'ADMINISTRADOR' || usuarioLogado.usuario.perfil.nome == 'RECEPCIONISTA'}" 
+						>
+					<p:menuitem  value="Recepcionista" url="cadastro_recepcionista.jsf" rendered="#{usuarioLogado.usuario.perfil.nome == 'ADMINISTRADOR'}"/>
+					<p:separator rendered="#{usuarioLogado.usuario.perfil.nome == 'ADMINISTRADOR'}"/>
+					<p:menuitem value="Cliente" url="cadastro_cliente.jsf" />
+					<p:separator />
+					<p:menuitem value="Avaliador" url="cadastro_avaliador.jsf" />
+				</p:submenu>
+
+				<p:submenu label="Consulta" icon="ui-icon-search">
+					<p:menuitem value="Usuario" url="consulta_usuario.jsf" rendered="#{usuarioLogado.usuario.perfil.nome != 'ALUNO'}"/>
+					<p:separator rendered="#{usuarioLogado.usuario.perfil.nome != 'ALUNO'}"/>
+					<p:menuitem value="Avaliação" url="consulta_avaliacao.jsf" />
+					<p:separator rendered="#{usuarioLogado.usuario.perfil.nome == 'ADMINISTRADOR'}" />
+					<p:menuitem value="Recepcionista" url="consulta_recepcionista.jsf"  rendered="#{usuarioLogado.usuario.perfil.nome == 'ADMINISTRADOR'}"/>
+				</p:submenu>
+
+				<p:menuitem url="/avaliacao.jsf" value="Nova Avaliação" rendered="#{usuarioLogado.usuario.perfil.nome == 'AVALIADOR'}"
+				></p:menuitem>
+
+				
+			</p:menubar>
+
+		</h:form>
+		<br />
+
+		<ui:insert name="corpo" />
+
+	</div>
+		
+	<div id="rodape">
+
+		<h:outputText
+			value="Copyright 2015-2016." />
+	</div>
+
+</h:body>
+</html>
